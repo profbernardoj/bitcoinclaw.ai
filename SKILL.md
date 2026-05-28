@@ -1,7 +1,7 @@
 ---
 name: everclaw
 version: 2026.5.28.1854
-# NOTE: Description must stay identical to packages/core/SKILL.md. Update both files together.
+# NOTE: Description must stay identical to root SKILL.md. Update both files together.
 description: Open-source first AI inference — GLM-5 as default, Claude as fallback only. Own your inference forever via the [REDACTED] decentralized network. Stake MOR tokens, access GLM-5, GLM-4.7 Flash, Kimi K2.5, and 30+ models with persistent inference by recycling staked MOR. Open-source first model router routes all tiers to [REDACTED] by default — Claude only kicks in as an escape hatch when needed. Includes [REDACTED] API Gateway bootstrap for zero-config startup, OpenAI-compatible proxy with auto-session management, automatic retry with fresh sessions, OpenAI-compatible error classification to prevent cooldown cascades, multi-key auth rotation v2 with proactive DIEM balance monitoring and reactive 402 watchdog, Gateway Guardian v5 with direct curl inference probes (eliminates Signal spam), proactive Venice DIEM credit monitoring, circuit breaker for stuck sub-agents, nuclear self-healing restart, always-on proxy-router with launchd auto-restart, smart session archiver, three-shift cyclic execution engine (v2 with 15-minute execution loops), 24/7 always-on power configuration for macOS, bundled security skills, zero-dependency wallet management via macOS Keychain, x402 payment client for agent-to-agent USDC payments, ERC-8004 agent registry reader for discovering trustless agents on Base, and hardware-aware local Ollama fallback with auto model selection (Gemma 4 family: E2B/E4B/26B/31B with vision + audio, based on available RAM/GPU).
 homepage: https://everclaw.com
 metadata:
@@ -64,34 +64,6 @@ metadata:
       note: "curl | bash installer available but users should review scripts before executing. All scripts are open source at github.com/profbernardoj/morpheus-skill."
     tags: ["inference", "everclaw", "morpheus", "mor", "decentralized", "ai", "blockchain", "base", "persistent", "fallback", "guardian", "security", "three-shifts", "task-planning"]
 ---
-
-<!-- ─── MONOREPO STRUCTURE ─────────────── -->
-
-## 📁 Repository Structure (Monorepo)
-
-This is a **monorepo** that produces 28+ flavor repos via composition:
-
-```
-packages/
-  core/              # Common Morpheus infrastructure (scripts, tests, docs, templates)
-everclaw-docker/   # Docker build for EverClaw
-  everclaw-key-api/  # Vercel key API service
-flavors/
-  morpheus-skill/    # Canonical default flavor
-  bitcoinclaw.ai/    # Bitcoin ecosystem flavor
-  emailclaw.org/     # Email management flavor
-  ...                # 28 total flavor directories
-scripts/
-  ecosystem-sync.sh  # Composes core + flavor → pushes to flavor remotes
-  flavor-compose.sh  # Composes a single flavor into a deployable repo
-skills/              # Bundled skills (security, chat, etc.)
-archive/             # Archived alternative installers, marketing, one-time tools
-```
-
-**Canonical remotes** (`origin`, `everclaw-org`) receive the full monorepo.  
-**Flavor remotes** receive composed output: `packages/core/*` + `flavors/<name>/*`.
-
-See `scripts/ecosystem-sync.sh` for the sync workflow.
 
 <!-- ─── AGENT INSTRUCTIONS (read by OpenClaw agents) ─────────────── -->
 
@@ -2879,29 +2851,56 @@ node scripts/buddy-export.mjs --import ~/alice-backup.tar.gz --force
 
 ### 2026.5.15.1418
 - **OpenClaw pin** v2026.5.7 → v2026.5.12
-- **Upstream highlights:**
-  - New: Per-sender tool policies (channel-scoped sender keys), per-agent message crossContext/actions.allow overrides, cron.get for job inspection, ACP session lineage metadata, exec command highlighting in approvals, maxPingPongTurns raised to 20, Fal GPT Image 2/Nano Banana 2 edit routing, iMessage status filtering + BlueBubbles cutover docs, Control UI recovery panel, Fly Machines container detection
-  - Build: pnpm 11.1.0, TypeScript 6.0.3 (stricter checks), hard-pinned non-peer deps, OpenAI SDK 6.37.0, Anthropic SDK 0.95.1, Google GenAI 2.0.1, Kysely 0.29.0, Peekaboo 3.0.0
-  - Fixes: Gateway honors max_completion_tokens on /v1/chat/completions, compaction scope preserves background exec sessions, doctor commits safe legacy migrations independently, Codex OAuth route preservation (reverts v2026.5.5 regression), cron payload.model repair, Plugin SDK deprecation cleanup
+- **Upstream highlights (v2026.5.7 → v2026.5.12):**
+  - New: Per-sender tool policies, per-agent message restrictions, cron.get, ACP session lineage, exec command highlighting, maxPingPongTurns to 20, Fal image edit routing, iMessage status filtering, Control UI recovery panel, Fly Machines detection
+  - Build: pnpm 11.1.0, TypeScript 6.0.3, hard-pinned deps, OpenAI SDK 6.37.0, Anthropic SDK 0.95.1, Google GenAI 2.0.1, Peekaboo 3.0.0
+  - Fixes: Gateway max_completion_tokens passthrough, compaction scope for background exec, doctor safe legacy migrations, Codex OAuth route preservation, cron model repair, Plugin SDK cleanup
   - (Reference: https://github.com/openclaw/openclaw/releases/tag/v2026.5.12)
 
 ### 2026.5.11.1938
 - **OpenClaw pin** v2026.4.29 → v2026.5.7
-- **Upstream highlights:**
-  - New: xAI/Grok 4.3, OpenAI Chat-Latest, Google Meet/Voice Call Twilio improvements, local service startup, Plugin SDK session actions, Discord voice diagnostics, Slack App Home, WhatsApp channel/newsletter targets, /context map, git plugin installs
-  - Build: pnpm 11 workspace upgrade, Plugin Registry npm-first cutover
-  - Fixes: WhatsApp libsignal-node, Gateway secrets preservation across restarts, Feishu thread ID hydration, LINE dmPolicy validation
+- **Upstream highlights (v2026.4.29 → v2026.5.7):**
+  - New: xAI/Grok 4.3, OpenAI Chat-Latest, Google Meet/Voice Call Twilio, local service startup, Plugin SDK session actions, Discord voice, Slack App Home, WhatsApp newsletter targets, /context map, git plugin installs
+  - Build: pnpm 11, Plugin Registry npm-first cutover
+  - Fixes: WhatsApp libsignal-node, Gateway secrets persistence, Feishu thread hydration, LINE dmPolicy
   - (Reference: https://github.com/openclaw/openclaw/releases/tag/v2026.5.7)
 
-### 2026.4.30.2333
-- **OpenClaw pin** v2026.4.26 → v2026.4.29
+### 2026.4.28.0352
+- **OpenClaw pin** v2026.4.25 → v2026.4.26
+- **Upstream highlights (v2026.4.26):**
+  - Providers: Cerebras bundled plugin; Ollama mega-patch (~30 fixes: prefix stripping, native thinking effort, VRAM defaults, context windows, auth scoping, web search, vision modality, timeouts)
+  - Memory: Asymmetric embedding inputType config; Ollama query prefixes for nomic/qwen3/mxbai models
+  - Plugins: Config deprecation → snapshot-based mutation; layered OPENCLAW_PLUGIN_STAGE_DIR; symlink discovery; install/uninstall conflict-aware writes
+  - Control UI: Config diff panel with JSON5/redaction; dashboard grid polish; Google Live browser Talk sessions
+  - CLI: `openclaw migrate` (Claude + Hermes importers); `openclaw nodes remove`; npm update temp-prefix safety
+  - Agents: Transcript compaction preflight (maxActiveTranscriptBytes); sessions_spawn alias resolution fix; cron run-scoped context isolation
+  - Matrix: E2EE one-command setup
+  - Fixes: EPIPE crash guard, Bonjour restart hardening, device token echo fix, transcript redaction, link understanding fallback
+  - (Reference: https://github.com/openclaw/openclaw/releases/tag/v2026.4.26)
+
+### 2026.4.28.0145
+- **OpenClaw pin** v2026.4.23 → v2026.4.25
+- **Bonjour/mDNS crash mitigation** — OpenClaw v2026.4.24 shipped a broken bonjour (mDNS/CIAO) plugin. EverClaw auto-disables it and cleans corrupted `plugin-runtime-deps` before gateway startup. (Ref: openclaw/openclaw#70232)
+- **Upstream highlights (v2026.4.24 + v2026.4.25):**
+  - TTS: `/tts latest` read-aloud, `/tts chat on|off` session-scoped auto-TTS, per-agent voice overrides, 6 new providers (Azure Speech, Xiaomi, Local CLI, Inworld, Volcengine, ElevenLabs v3)
+  - Plugins: Cold persisted registry — eliminates broad manifest scans, faster boot, deterministic provider discovery
+  - OTEL: Expanded telemetry across model calls, token usage, tool loops, harness runs, exec, delivery, context assembly, memory pressure; Prometheus scrape plugin; W3C traceparent propagation
+  - Browser: Iframe-aware role snapshots, safe tab URLs, CDP readiness tuning, headless one-shot launch, `doctor --deep`
+  - Control UI: PWA install + Web Push notifications, Crestodian TUI setup, context mode selector
+  - Google Meet: Calendar-backed attendance export, meeting record tools
+  - DeepSeek V4: Venice passthrough fix for `reasoning_content` replay turns
+  - Install: Windows/macOS/Linux/Docker hardening, Node service restarts, LaunchAgent token rotation
+  - Cron: Jobs interrupted by restart recorded as failed, one-shots disabled after interruption
+  - Security: Device token scope containment, redaction patterns on transcripts, mixed-version gateway detection
+  - (References: https://github.com/openclaw/openclaw/releases/tag/v2026.4.24, https://github.com/openclaw/openclaw/releases/tag/v2026.4.25)
+
+### 2026.4.24.1832
+- **OpenClaw pin** v2026.4.21 → v2026.4.23
 - **Upstream highlights:**
-  - New: NVIDIA provider with onboarding/static catalogs, Commitments system (opt-in follow-ups with heartbeat delivery), Memory wiki with people metadata/provenance, active-run steering queue (500ms debounce fallback)
-  - Fixes: Tool sections no longer widen restrictive profiles (startup warning identifies affected configs), stale-session recovery with tombstone + orphan bounds, browser config refresh stat/honors executablePath, systemd exit code 78 for port conflicts (stops restart loops), Telegram group empty-prompt leak plugged, Discord/Slack silent-reply fallback, Codex stream preservation, blank-prompt skip at runner boundary
-  - Security: OpenGrep rulepack + SARIF scanning, GHSA media/decode policy refinement (performance-only unless demonstrated bypass), compiled skill trust anchor validation, web-fetch IPv6 ULA opt-in for trusted proxies
-  - Performance: Reusable model catalogs, event-loop readiness diagnostics, runtime-dependency repair, version-scoped update caches
-  - Channels: Slack Block Kit limits, Telegram proxy/webhook/polling/send resilience, Discord startup/rate-limit handling, WhatsApp delivery/liveness, Microsoft Teams/Matrix/Feishu edge cases
-  - (Reference: https://github.com/openclaw/openclaw/releases/tag/v2026.4.29)
+  - New: Image generation via Codex OAuth (gpt-image-2 without API key), OpenRouter image models, subagent forked context (child inherits parent transcript), per-call timeoutMs for image/video/music/TTS tools, configurable local embedding contextSize (4096 default), Pi packages 0.70.0, Codex harness debug logging
+  - Fixes: Block streaming duplicate prevention, Slack MPIM group DM classification, Telegram media markdown parsing, WhatsApp media normalization, webchat error surfacing, memory CLI local embedding resolution, Codex Windows npm shim resolution, image attachment preservation for text-only models, media understanding honors explicit imageModel config
+  - Security: Teams cross-bot token replay blocked, Android loopback-only cleartext, pairing private-IP requirement, QA channel URL scheme rejection, Claude CLI bypassPermissions from exec policy, plugin setup-api lookup hardening
+  - (Reference: https://github.com/openclaw/openclaw/releases/tag/v2026.4.23)
 
 ### 2026.4.22.1314
 - **OpenClaw pin** v2026.4.15 → v2026.4.21
