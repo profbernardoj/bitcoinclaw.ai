@@ -13,13 +13,12 @@ env:
 
 jobs:
   # ─── Discover Flavors ─────────────────────────────────────────────────────────
-  # Dynamically builds the matrix from templates/flavors/ directory.
-  # Each subdirectory name becomes a flavor entry.
-  # NOTE: Flavor directory names must exactly match the intended image name
-  # (e.g. templates/flavors/morpheus-agent/ → ghcr.io/everclaw/morpheus-agent).
-  # Adding a new flavor is zero-config: just create the directory and push.
+  # Only run Docker builds on the monorepo (EverClaw/EverClaw).
+  # Composed flavor repos are flattened copies without packages/core/ structure.
+  # They can't build Docker images - the Dockerfile expects monorepo paths.
 
   discover-flavors:
+    if: github.repository == 'EverClaw/EverClaw'
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -45,6 +44,7 @@ jobs:
 
   build-and-push:
     needs: discover-flavors
+    if: github.repository == 'EverClaw/EverClaw'
     runs-on: ubuntu-latest
     permissions:
       contents: read

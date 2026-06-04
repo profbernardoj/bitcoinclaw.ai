@@ -109,9 +109,13 @@ jobs:
       - name: Scan for secrets
         run: gitleaks detect --source . --verbose --no-git
 
+  # Docker build only runs on monorepo (EverClaw/EverClaw).
+  # Composed flavor repos don't have packages/core/ or flavors/ directories
+  # that the Dockerfile requires.
   docker-smoke:
     name: Docker Build Smoke Test
     runs-on: ubuntu-latest
+    if: github.repository == 'EverClaw/EverClaw'
     steps:
       - uses: actions/checkout@v4
 
