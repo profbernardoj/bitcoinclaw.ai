@@ -1,10 +1,9 @@
 {
-  "name": "Morpheus Skill",
-  "slug": "morpheus-skill",
-  "domain": "morpheusclaw.com",
-  "description": "The canonical Morpheus decentralized AI agent skill for OpenClaw",
-  "remote": "https://github.com/profbernardoj/morpheus-skill.git",
+  "name": "Bitcoin Claw",
+  "slug": "bitcoinclaw",
+  "domain": "bitcoinclaw.ai",
+  "description": "AI agent for Bitcoin ecosystem",
+  "remote": "https://github.com/profbernardoj/bitcoinclaw.ai.git",
   "defaultModel": "glm-5",
-  "persona": "Morpheus decentralized AI assistant",
-  "canonical": true
+  "persona": "Bitcoin-focused AI assistant"
 }
